@@ -6,8 +6,6 @@ from server import models
 
 app = Flask(__name__)
 
-counters = ['sm', 'lo', 'la']
-
 
 @app.route('/favicon.ico')
 def favicon():
@@ -15,13 +13,36 @@ def favicon():
                                'favicon.ico',
                                mimetype='image/vnd.microsoft.icon')
 
-
 @app.route("/")
 def index():
     return send_from_directory('static', 'index.html')
 
+@app.route("/paths/")
+def get_paths():
+    paths = models.Path.query.all()
+    if not paths:
+        abort(404)
+    paths = [{'id': p.id, 'time_created': str(p.time_created),
+              'time_updated': str(p.time_updated), 'message': p.message}
+            for p in paths]
+    return jsonify(paths)
 
-@app.route("/get_nodes/<int:pathid>")
+@app.route("/paths/all")
+@app.route("/paths/all/nodes")
+def all_paths():
+    paths = models.Path.query.all()
+    if not paths:
+        abort(404)
+    paths = {p.id: {
+              'nodes': [{'lng': n.longitude, 'lat': n.lattitude,
+                'time_created': str(n.time_created), 'person': n.owner}
+                for n in p.hops],
+              'time_created': str(p.time_created),
+              'time_updated': str(p.time_updated), 'message': p.message}
+            for p in paths}
+    return jsonify(paths)
+
+@app.route("/paths/<int:pathid>/nodes")
 def get_nodes(pathid):
     path = models.Path.query.get(pathid)
     if not path:
@@ -31,13 +52,31 @@ def get_nodes(pathid):
             for n in path.hops]
     return jsonify(hops)
 
-
 @app.route("/new_node", methods=['POST'])
 def new_node():
-    code = request.form.get('code')
-    name = request.form.get('name', default="UNK")
-    lat = request.form.get('lat', default=0)
-    lng = request.form.get('lng', default=0)
+    data = request.get_json()
+    if not data:
+        return abort(400)
+
+    if 'code' in data:
+        code = data['code']
+    else:
+        return abort(400)
+
+    if 'name' in data:
+        name = data['name']
+    else:
+        name = 'UNK'
+
+    if 'lat' in data:
+        lat  = data['lat']
+    else:
+        lng = 0
+
+    if 'lng' in data:
+        lng  = data['lng']
+    else:
+        lat = 0
 
     path = models.add_node(name, lat, lng, code)
     if not path:
@@ -47,11 +86,9 @@ def new_node():
 
     return repr(path.next_code)
 
-
 @app.before_first_request
 def flask_init_db():
     init_db()
-
 
 @app.teardown_request
 def session_clear(exception=None):
