@@ -27,7 +27,6 @@
         text-align: center;
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
-        padding-left: 10px;
       }
       #code-display {
         position: absolute;
@@ -43,15 +42,14 @@
         border: 1px solid #999;
         text-align: center;
         line-height: 30px;
-        padding-left: 10px;
       }
     </style>
   </head>
   <body>
     <div id="floating-panel">
       <input id="initials" placeholder="Initials" type="textbox" maxlength="3">
-      <input id="code" placeholder="Code" type="textbox" value="">
-      <input id="address" placeholder="City" type="textbox" value="Rochester, NY">
+      <input id="code" placeholder="Code" type="textbox">
+      <input id="address" placeholder="City" type="textbox">
       <input id="submit" type="button" value="Submit">
     </div>
     <div id="code-display" style="display:none">
@@ -132,10 +130,10 @@
             ctx.font = "30px Arial";
             ctx.fillText(code, 10, 50); 
             var cd = document.getElementById("code-display");
-            cd.style.display = "block"
+            cd.style.display = "block";
 
             var fp = document.getElementById("floating-panel");
-            fp.style.display = "none"
+            fp.style.display = "none";
         }
 
         function initMap() {
