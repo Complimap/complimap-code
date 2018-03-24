@@ -25,7 +25,6 @@ class Person(Base):
     uname = Column(String, unique=True)
     secret = Column(String)
 
-    #nodes = relationship("Node", backref="owner")
     created_paths = relationship("Path", back_populates="creator")
 
     def __init__(self, uname):
