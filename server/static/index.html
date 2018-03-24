@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var poly;
+      var map;
+
+      function loadJSON(path, success, error)
+      {
+          var xhr = new XMLHttpRequest();
+          xhr.onreadystatechange = function()
+          {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                      if (success)
+                          success(JSON.parse(xhr.responseText));
+                  } else {
+                      if (error)
+                          error(xhr);
+                  }
+              }
+          };
+          xhr.open("GET", path, true);
+          xhr.send();
+      }
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 7,
+          center: {lat: 0, lng: 0}
+        });
+
+        poly = new google.maps.Polyline({
+          strokeColor: '#000000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+        poly.setMap(map);
+
+        loadJSON('/get_nodes/1', function(data) {
+          for(const d in data) {
+            var path = poly.getPath();
+
+            // Because path is an MVCArray, we can simply append a new coordinate
+            // and it will automatically appear.
+            path.push(new google.maps.LatLng(data[d].lat, data[d].lng));
+
+            // Add a new marker at the new plotted point on the polyline.
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(data[d].lat, data[d].lng),
+                title: data[d].person + " - " + data[d].time_created,
+                map: map
+            });
+          }
+        });
+      }
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPBmxwmrm145ZFaF3Zz1wpEp1p_yQFabU&callback=initMap">
+    </script>
+  </body>
+</html>
