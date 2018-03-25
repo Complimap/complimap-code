@@ -21,7 +21,7 @@ function loadJSON(path, success, error)
     xhr.send();
 }
 
-functionfunction postJSON(url, data, success, error)
+function postJSON(url, data, success, error)
 {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
