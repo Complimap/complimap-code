@@ -71,12 +71,12 @@ def new_node():
     if 'lat' in data:
         lat  = data['lat']
     else:
-        lng = 0
+        lat = 0
 
     if 'lng' in data:
         lng  = data['lng']
     else:
-        lat = 0
+        lng = 0
 
     path = models.add_node(name, lat, lng, code)
     if not path:
@@ -84,7 +84,7 @@ def new_node():
     db.add(path)
     db.commit()
 
-    return repr(path.next_code)
+    return jsonify({'message':path.message,'next_code':path.next_code})
 
 @app.before_first_request
 def flask_init_db():

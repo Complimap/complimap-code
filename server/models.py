@@ -51,7 +51,7 @@ class Path(Base):
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
-    message = Column(Text())
+    message = Column(String(length=32))
     # next_code len is twice as much as initial code_len. For future.
     next_code = Column(String(length=16))
 

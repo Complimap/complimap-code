@@ -48,7 +48,6 @@ function addNode(resultsMap) {
     var address = document.getElementById('address').value;
     geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
-            console.log(results[0].geometry.location);
             var data = {
                 'code': code, 'name': initials,
                 'lat': results[0].geometry.location.lat(),
@@ -56,25 +55,57 @@ function addNode(resultsMap) {
             };
             postJSON('/new_node', data,
                      function(resp) {
-                         displayCode(resp);
+                         data = JSON.parse(resp);
+                         displayCode(data.message, data.next_code);
                          initMap();
+                         map.setCenter(results[0].geometry.location);
                      },
                      function(xhr) {
                          alert("Invalid code. Please try again.");
                      }
                     );
         } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            alert('Invalid location. Please try again.');
         }
     });
 }
 
-function displayCode(code) {
+function displayCode(message, code) {
     var c = document.getElementById("codeCanvas");
     var ctx = c.getContext("2d");
 
+    var qr = new QRious({
+        value: window.location.host+'/#'+code,
+        background: 'white', // background color
+        foreground: 'black', // foreground color
+        level: 'L', // Error correction level of the QR code (L, M, Q, H)
+        mime: 'image/png', // MIME type used to render the image for the QR code
+        size: 300 // Size of the QR code in pixels.
+    });
+    qrcode = new Image();
+    qrcode.src = qr.toDataURL();
+    qrcode.onload = function() {
+        ctx.drawImage(qrcode,c.width-350,c.height-350);
+
+        var button = document.getElementById('btn-download');
+        var dataURL = c.toDataURL("image/png");
+        button.href = dataURL;
+    };
+
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,c.width,c.height);
+
+    ctx.font = "50px Arial";
+    ctx.fillStyle = 'black';
+    ctx.fillText(message, 20, 60);
+
+    ctx.font = "30px Arial"
+    ctx.fillText("Show off your compliment at", 20, 110);
+    ctx.fillText(window.location.host, 20, 145);
+    ctx.fillText("with code:", 20, 180);
     ctx.font = "30px Arial";
-    ctx.fillText(code, 10, 50);
+    ctx.fillText(code, 30, 220);
+
     var cd = document.getElementById("code-display");
     cd.style.display = "block";
 
@@ -83,9 +114,13 @@ function displayCode(code) {
 }
 
 function initMap() {
+    if(window.location.hash.split('#')[1]) {
+        document.getElementById('code').value = window.location.hash.split('#')[1]
+    }
+
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 3,
-        center: {lat: 0, lng: 0}
+        zoom: 4,
+        center: {lat: 39.8283, lng: -78.57950}
     });
 
     geocoder = new google.maps.Geocoder();

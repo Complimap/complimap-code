@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Simple Polylines</title>
+    <title>Complimap</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -19,6 +19,20 @@
       #floating-panel {
         position: absolute;
         bottom: 10px;
+        left: 50%;
+        margin-left: -125px;
+        width: 250px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+      }
+      #title {
+        position: absolute;
+        top: 10px;
         right: 25%;
         z-index: 5;
         background-color: #fff;
@@ -31,34 +45,48 @@
       #code-display {
         position: absolute;
         left: 50%;
-        bottom: 50%;
+        bottom: 15%;
         margin-left: -125px;
-        margin-bottom: -75px;
         width: 250px;
-        height: 150px;
         z-index: 5;
         background-color: #fff;
-        padding: 10px;
+        padding: 15px;
         border: 1px solid #999;
         text-align: center;
         line-height: 30px;
       }
+      #codeCanvas {
+        width: 220px;
+        height: 170px;
+      }
     </style>
   </head>
   <body>
+    <div id="title">
+        Complimap - Positivity traveling across the country.
+    </div>
     <div id="floating-panel">
       <input id="initials" placeholder="Initials" type="textbox" maxlength="3">
-      <input id="code" placeholder="Code" type="textbox">
+      <input id="code" placeholder="Code" type="textbox" maxlength="8">
       <input id="address" placeholder="City" type="textbox">
       <input id="submit" type="button" value="Submit">
     </div>
     <div id="code-display" style="display:none">
-      <canvas id="codeCanvas" width="250" height="150" style="border:1px solid #000000;">
-      </canvas> 
+      <h2>Thank you!</h2>
+      <p>
+        Please share the compliment below with a friend to keep the chain going!
+      </p>
+      <canvas id="codeCanvas" width="792" height="612" style="border:1px solid #000000;">
+      </canvas>
+      <br>
+      <a href="#" class="button" id="btn-download" download="compliment.png">Download</a>
     </div>
     <div id="map"></div>
-    <script async defer
+    <script
     src="/static/index.js">
+    </script>
+    <script async defer
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js">
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPBmxwmrm145ZFaF3Zz1wpEp1p_yQFabU&callback=initMap">
