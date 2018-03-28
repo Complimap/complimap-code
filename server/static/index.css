@@ -14,6 +14,9 @@ html, body {
     margin: 0;
     padding: 0;
 }
+a {
+    color: darkblue;
+}
 #node-form {
     background-color: #a08090;
     color: #ffffff;
@@ -30,16 +33,38 @@ html, body {
     width: 220px;
     height: 170px;
 }
+#about {
+    margin-left: 5px;
+    margin-rght: 5px;
+    text-align: center;
+}
+#about .row {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+#about h1 {
+    font-size: 25px;
+    text-align: center;
+}
+#about .card {
+    background-color: #907080;
+    color: #ffffff;
+    height: 100%;
+}
 #title {
     padding: 5px;
     border: 1px solid #999;
     font-size: 20px;
     text-align: center;
 }
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 520px) {
     #title {
-	font-size: 14px;
+	font-size: 16px;
 	text-align: left;
 	padding: 2.5px;
+    }
+    #about .row {
+	display: inherit;
     }
 }

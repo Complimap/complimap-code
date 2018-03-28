@@ -111,12 +111,13 @@ function displayCode(message, code) {
     ctx.fillText(message, 20, 60);
 
     ctx.font = "30px Arial"
-    ctx.fillText("Show off your compliment at", 20, 110);
+    ctx.fillText("Add your compliment to the map at", 20, 110);
     ctx.fillText(window.location.host, 20, 145);
     ctx.fillText("with code:", 20, 180);
     ctx.font = "30px Arial";
     ctx.fillText(code, 30, 220);
 
+    ctx.fillText("Or, scan this QR code:", 20, c.height-300);
     var modal = M.Modal.getInstance(document.getElementById("code-display"));
     modal.open();
 }
