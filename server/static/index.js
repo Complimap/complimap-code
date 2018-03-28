@@ -1,6 +1,7 @@
 var poly;
 var map;
 var geocoder;
+var infowindow;
 
 function loadJSON(path, success, error)
 {
@@ -140,6 +141,7 @@ function initPage() {
 	center: {lat: 39.8283, lng: -78.57950},
 	disableDefaultUI: true,
 	zoomControl: true,
+	styles: mapStyle
     });
 
     geocoder = new google.maps.Geocoder();
@@ -158,6 +160,7 @@ function initPage() {
 	    });
 	    poly.setMap(map);
 
+	    infowindow = new google.maps.InfoWindow();
 	    for(const n in paths[p].nodes) {
 		var node = paths[p].nodes[n]
 		var path = poly.getPath();
@@ -170,18 +173,17 @@ function initPage() {
 		// Add a new marker at the new plotted point on the polyline.
 		var marker = new google.maps.Marker({
 		    position: loc,
-		    title: paths[p].message + " - " + node.person + " - " + node.time_created,
+		    title: paths[p].message + " - " + node.person +
+			" - " + node.time_created+"-0000",
 		    map: map,
 		    clickable: true
 		});
-		marker.info = new google.maps.InfoWindow({
-		    maxWidth: 200,
-		    content: '<div id="bodyContent">'+
-			'<p>' +  paths[p].message + '<br>' + node.person +
-			'<br>' + node.time_created + '</p>' + '</div>',
-		});
+		marker.content = '<div id="bodyContent">'+
+		    '<p>' +  paths[p].message + '<br>' + node.person +
+		    '<br>' + new Date(node.time_created+"-0000").toLocaleString() + '</p>' + '</div>';
 		google.maps.event.addListener(marker, 'click', function() {
-		    this.info.open(map, this);
+		    infowindow.setContent(this.content)
+		    infowindow.open(map, this);
 		});
 	    }
 	}

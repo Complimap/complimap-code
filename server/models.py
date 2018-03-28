@@ -21,7 +21,7 @@ class Node(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    time_created = Column(DateTime(), server_default=func.now())
 
     lattitude = Column(Float)
     longitude = Column(Float)
@@ -48,8 +48,8 @@ class Path(Base):
     __tablename__ = "paths"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    time_created = Column(DateTime(timezone=True), server_default=func.now())
-    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
+    time_created = Column(DateTime(), server_default=func.now())
+    time_updated = Column(DateTime(), onupdate=func.now())
 
     message = Column(String(length=32))
     # next_code len is twice as much as initial code_len. For future.
