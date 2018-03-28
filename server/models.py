@@ -27,6 +27,7 @@ class Node(Base):
     longitude = Column(Float)
 
     owner = Column(String(length=3))
+    code = Column(String(length=16))
 
     path_id = Column(Integer, ForeignKey("paths.id"))
     path = relationship("Path", back_populates="hops", uselist=False,
@@ -79,7 +80,7 @@ def add_node(uname, lat, lon, code):
         return None
 
     node = Node(owner=uname, lattitude=lat, longitude=lon,
-                path=path, prev=path.head_node)
+                path=path, prev=path.head_node, code=code)
     path.head_node = node
     path.next_code = gen_secret(string.ascii_lowercase + string.digits, 8)
     return path
