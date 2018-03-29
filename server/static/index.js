@@ -73,8 +73,10 @@ function addNode(resultsMap) {
 }
 
 function hideForm() {
-    var cd = document.getElementById("body");
-    cd.style.overflow = "visible";
+    document.body.style.overflow = "visible";
+
+    var modal = M.Modal.getInstance(document.getElementById("node-form"));
+    modal.close();
 }
 
 function displayCode(message, code) {
@@ -123,7 +125,6 @@ function initPage() {
 	document.getElementById('code').value = window.location.hash.split('#')[1]
     }
 
-
     var elem = document.querySelector('.fixed-action-btn');
     var instance = M.FloatingActionButton.init(elem);
 
@@ -132,6 +133,8 @@ function initPage() {
 
     var elem = document.querySelector('#node-form');
     var instance = M.Modal.init(elem);
+
+    markers = [];
 
     map = new google.maps.Map(document.getElementById('map'), {
 	zoom: 4,
@@ -144,6 +147,7 @@ function initPage() {
     geocoder = new google.maps.Geocoder();
 
     document.getElementById('submit').addEventListener('click', function() {
+	hideForm();
 	addNode(map);
     });
 
