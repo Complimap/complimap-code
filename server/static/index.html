@@ -19,6 +19,9 @@
         <p>
           Please share the compliment below to keep the chain going!
         </p>
+        <p>
+          Right click (or tap and hold) to save the image.
+        </p>
         <canvas id="codeCanvas" width="792" height="612" style="border:1px solid #000000;">
         </canvas>
         <br>
@@ -31,7 +34,7 @@
         <input id="initials" placeholder="Initials" type="textbox" maxlength="3"><br>
         <input id="code" placeholder="Code" type="textbox" maxlength="8"><br>
         <input id="address" placeholder="City" type="textbox"><br>
-        <a class="waves-effect waves-light btn red" id="submit">Submit</a>
+        <a class="waves-effect waves-light btn red" href="javscript:hideForm()" id="submit">Submit</a>
       </div>
     </div>
 
@@ -102,12 +105,11 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js">
     </script>
+    <script src="/static/map-style.js">
     </script>
-    <script
-    src="/static/map-style.js">
+    <script src="/static/index.js">
     </script>
-    <script
-    src="/static/index.js">
+    <script src="/static/markerclusterer.js">
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPBmxwmrm145ZFaF3Zz1wpEp1p_yQFabU&callback=initPage">
     </script>

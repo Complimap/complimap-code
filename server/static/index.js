@@ -2,6 +2,7 @@ var poly;
 var map;
 var geocoder;
 var infowindow;
+var markers = [];
 
 function loadJSON(path, success, error)
 {
@@ -72,13 +73,8 @@ function addNode(resultsMap) {
 }
 
 function hideForm() {
-    var cd = document.getElementById("code-display");
-    cd.style.display = "none";
-}
-
-function displayForm() {
-    var cd = document.getElementById("code-display");
-    cd.style.display = "none";
+    var cd = document.getElementById("body");
+    cd.style.overflow = "visible";
 }
 
 function displayCode(message, code) {
@@ -186,7 +182,9 @@ function initPage() {
 		    infowindow.setContent(this.content)
 		    infowindow.open(map, this);
 		});
+		markers.push(marker);
 	    }
+	    var markerCluster = new MarkerClusterer(map, markers, {imagePath:'/static/clusters/m'})
 	}
     });
 }
